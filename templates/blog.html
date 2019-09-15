@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{% if not blog_id %}
+<h1>Build a Blog</h1>
+
+{% for entry in bloglist %}
+    <div class = "entry">
+        <h2><a href="/blog?id={{entry.id}}">{{entry.title}}</a></h2>
+        <p>{{entry.body}}</p>
+    </div>
+    <hr />
+{% endfor %}
+
+{% endif %}
+
+{% if blog_id %}
+<h1>{{blog_title}}</h1>
+<p>{{blog_body}}</p>
+{% endif %}
+
+{% endblock %}
