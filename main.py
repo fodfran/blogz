@@ -103,10 +103,9 @@ def logout():
 def blog():
     encoded_username = request.args.get("user")
     user_bloglist = []
+
     encoded_blog_id = request.args.get("id")
-    blog_title = ""
-    blog_body = ""
-    blog_owner = ""
+    blog = ""
     header_title = "All Blogz"
 
     if encoded_username:
@@ -114,17 +113,13 @@ def blog():
         user_bloglist = Blog.query.filter_by(owner = user).all()
         header_title = user.username + "'s Blog"
     
-
     if encoded_blog_id:
         blog = Blog.query.get(int(encoded_blog_id))
-        blog_title = blog.title
-        blog_body = blog.body
-        blog_owner = blog.owner
-        header_title = blog_title
+        header_title = blog.title
 
     return render_template('blog.html', bloglist = Blog.query.all(), title = header_title, 
-        blog_title=blog_title, blog_body=blog_body, blog_owner = blog_owner, blog_id = encoded_blog_id and cgi.escape(encoded_blog_id, quote=True), 
-        user_bloglist = user_bloglist, blog_user = encoded_username)
+        blog = blog, blog_id = encoded_blog_id and cgi.escape(encoded_blog_id, quote=True), 
+        user_bloglist = user_bloglist, blog_user = encoded_username and cgi.escape(encoded_username, quote=True))
 
 @app.route("/newpost", methods = ['POST', 'GET'])
 def add_post():
