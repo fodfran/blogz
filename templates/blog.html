@@ -2,13 +2,14 @@
 
 {% block content %}
 
-{% if not blog_id %}
-<h1>Build a Blog</h1>
+{% if not blog_id and not blog_user%}
+<h1>All Blogz</h1>
 
 {% for entry in bloglist %}
     <div class = "entry">
         <h2><a href="/blog?id={{entry.id}}">{{entry.title}}</a></h2>
         <p>{{entry.body}}</p>
+        <p class = "written_by">written by <a href ="/blog?user={{entry.owner.username}}">{{entry.owner.username}}</a></p>
     </div>
     <hr />
 {% endfor %}
@@ -16,8 +17,29 @@
 {% endif %}
 
 {% if blog_id %}
-<h1>{{blog_title}}</h1>
-<p>{{blog_body}}</p>
+<h1> {{blog_title}}</h1>
+<div class = "entry">
+    
+    <p>{{blog_body}}</p>
+    <p class = "written_by">written by <a href ="/blog?user={{blog_owner.username}}">{{blog_owner.username}}</a></p>
+</div>
+
+{% endif %}
+
+{% if blog_user%}
+
+<h1>{{blog_user}}'s Blog</h1>
+
+{% for entry in user_bloglist %}
+    <div class = "entry">
+        <h2><a href="/blog?id={{entry.id}}">{{entry.title}}</a></h2>
+        <p>{{entry.body}}</p>
+        <p class = "written_by">written by <a href ="/blog?user={{entry.owner.username}}">{{entry.owner.username}}</a></p>
+
+    </div>
+    <hr />
+{% endfor %}
+
 {% endif %}
 
 {% endblock %}

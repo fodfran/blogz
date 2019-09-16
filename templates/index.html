@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Blogz Users!</h1>
+        
+    <div class = "userlist">
+        {% for user in userlist %}
+    
+        <span><a href="/blog?user={{user.username}}">{{user.username}}</a></span>
+        </br>
+       
+        {% endfor %}
+    </div>
+
+{% endblock %}

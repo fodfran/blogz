@@ -6,10 +6,31 @@
 
     </head>
     <body>
-        <a href="/blog">Main Blog Page</a>
-        <a href="/newpost">Add a Blog Entry</a>
+        <div class="logout_button" style='float: right'>
+          {% if 'username' in session %}
+            
+            <form action="/logout" method="post">
+                {{ session['username'] }}
+              <input type="submit" value="Log Out" />
+            </form>
+          {% else %}
+            <a href="login">login</a> | <a href="register">register</a>
+          {% endif %}
+        </div>
+        </br>
+        </br>
+        </br>
+        <a href="/">Home | </a>
+        <a href="/blog">All Blogz</a>
+        <a href="/newpost">| New Entry</a>
         {% block content %}
         {% endblock %}
-
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            
+            {% for category, message in messages %}
+                <p class ="{{category}}">{{message}}</p>
+            {% endfor %}
+            
+        {% endwith %}
     </body>
 </html>

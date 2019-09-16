@@ -2,11 +2,11 @@
 
 {% block content %}
 
-<h1>Add a Blog Entry</h1>
+<h1>Add an Entry to <a href="/blog?user={{blog_owner.username}}">{{blog_owner.username}}</a>'s Blog</h1> 
 
 <form method = "POST" action = "/newpost">
     <label>Title for your new blog:<br>
-        <input type="text" name = "title" />
+        <input type="text" name = "title" size="50"/>
     </label>
     <br>
     {% if title_error %}

@@ -20,8 +20,13 @@ form{
     padding: 10px;
     border-radius: 10px;
 }
+
 .error {
     color: red;
+}
+
+.written_by{
+    font-style: italic;
 }
 
 .entry{
@@ -39,6 +44,20 @@ form{
     color: white;
 }
 
+.userlist{
+    background-color: black;
+    display: inline-block;
+    font-size: 18px;
+    border: 2px solid white;
+    padding: 10px;
+    border-radius: 10px;
+    width: 30%;
+}
+
+.userlist a{
+    color: white;
+}
+
 input{
     border: 2px solid darkturquoise;
 }
@@ -47,7 +66,7 @@ textarea{
     border: 2px solid darkturquoise;
 }
 
-input[type=submit]{
+input[type=submit], input[type=button]{
     color: white;
     background: darkturquoise;
     border: 2px solid white;
