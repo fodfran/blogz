@@ -1,7 +1,83 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/blog_style.css')}}">
+         <!-- <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='styles/blog_style.css')}}"> -->
+<style>
+body {
+    text-align: center;
+    background-color: darkturquoise;
+    color: black;
+    font-family: fantasy;
+
+}
+h1{
+    font-weight:bolder;
+}
+a{
+    color: black;
+}
+form{
+    background-color: black;
+    color: darkturquoise;
+    display: inline-block;
+    font-size: 18px;
+    border: 2px solid white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.error {
+    color: red;
+}
+
+.written_by{
+    font-style: italic;
+}
+
+.entry{
+    background-color: black;
+    color: darkturquoise;
+    display: inline-block;
+    font-size: 18px;
+    border: 2px solid white;
+    padding: 10px;
+    border-radius: 10px;
+    width: 50%;
+}
+
+.entry a{
+    color: white;
+}
+
+.userlist{
+    background-color: black;
+    display: inline-block;
+    font-size: 18px;
+    border: 2px solid white;
+    padding: 10px;
+    border-radius: 10px;
+    width: 30%;
+}
+
+.userlist a{
+    color: white;
+}
+
+input{
+    border: 2px solid darkturquoise;
+}
+
+textarea{
+    border: 2px solid darkturquoise;
+}
+
+input[type=submit], input[type=button]{
+    color: white;
+    background: darkturquoise;
+    border: 2px solid white;
+    border-radius: 10px;
+}
+</style>
         <title>{{title}}</title>
 
     </head>
