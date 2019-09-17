@@ -1,41 +1,13 @@
-from flask import Flask, request, redirect, render_template, session, flash, url_for
-from flask_sqlalchemy import SQLAlchemy
+from flask import request, redirect, render_template, session, flash, url_for
 import cgi
 import re
 
-app = Flask(__name__)
-app.config['DEBUG'] = True
+from app import app, db
+from models import User, Blog
+from hashutils import check_pw_hash
 
-# Note: the connection string after :// contains the following info:
-# user:password@server:portNumber/databaseName
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://blogz:password@localhost:8889/blogz'
-app.config['SQLALCHEMY_ECHO'] = True
-db = SQLAlchemy(app)
 app.secret_key = '5252008'
 
-class Blog(db.Model):
-    
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(200))
-    body = db.Column(db.String(10000))
-    owner_id = db.Column(db.Integer, db.ForeignKey("user.id"))
-
-    def __init__(self, title, body, owner):
-        self.title = title
-        self.body = body
-        self.owner = owner
-
-class User(db.Model):
-    
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(120), unique=True)
-    password = db.Column(db.String(120))
-    blogs = db.relationship('Blog', backref='owner')
-
-    def __init__(self, username, password):
-        self.username = username
-        self.password = password
 
 @app.before_request
 def require_login():
@@ -55,11 +27,11 @@ def login():
             flash("User does not exist", "error")
             return redirect("/login")
 
-        if user.password != user_password:
+        if not check_pw_hash(user_password, user.pw_hash):
             flash("User password is incorrect", "error")
             return redirect("/login")
         
-        if user and user.password == user_password:
+        if user and check_pw_hash(user_password, user.pw_hash):
             session['username'] = user_username
             flash("Logged in successfully!")
             return redirect("/newpost") 
