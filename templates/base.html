@@ -8,8 +8,28 @@ body {
     background-color: darkturquoise;
     color: black;
     font-family: fantasy;
-
+    padding-bottom: 35px;
+    padding-top: 50px;
 }
+
+footer{
+    
+    font-size: 20px;
+    background-color: black;
+    color: darkturquoise;
+    padding: 10px;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    position: fixed;
+    border-top: solid white 2px;
+    word-spacing: 5px;
+}
+
+footer a{
+    color: white;
+}
+
 h1{
     font-weight:bolder;
 }
@@ -26,23 +46,29 @@ form{
     border-radius: 10px;
 }
 
+form.logout{
+    border: none;
+    padding-top: 13px;
+
+}
 .error {
     color: red;
 }
 
 .written_by{
     font-style: italic;
+    font-size: 14px;
 }
 
 .entry{
     background-color: black;
     color: darkturquoise;
     display: inline-block;
-    font-size: 18px;
+    font-size: 17px;
     border: 2px solid white;
     padding: 10px;
     border-radius: 10px;
-    width: 50%;
+    width: 70%;
 }
 
 .entry a{
@@ -77,28 +103,61 @@ input[type=submit], input[type=button]{
     border: 2px solid white;
     border-radius: 10px;
 }
+
+.topnav {
+  background-color: black;
+  overflow: hidden;
+  left: 0;
+    top: 0;
+    width: 100%;
+    position: fixed;
+    border-bottom: solid white 2px;
+}
+
+.topnav a {
+  float: left;
+  color: darkturquoise;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+.topnav a:hover {
+  background-color: paleturquoise;
+  color: black;
+}
+
+.topnav a.active {
+    
+  background-color: white;
+  color: black;
+}
 </style>
-        <title>{{title}}</title>
+
+    <title>{{title}}</title>
 
     </head>
     <body>
-        <div class="logout_button" style='float: right'>
+        <div class="topnav">
+            <a href="/" class="{{ho_status}}">Home</a>
+            <a href="/blog/1" class="{{bl_status}}">All Blogz</a>
+            <a href="/newpost" class="{{ne_status}}">New Entry</a>
+            <div class="logout_button" style='float: right'>
           {% if 'username' in session %}
             
-            <form action="/logout" method="post">
-                {{ session['username'] }}
+            <form class="logout" action="/logout" method="post">
+                {{ session['username'] }}&nbsp
               <input type="submit" value="Log Out" />
             </form>
           {% else %}
-            <a href="login">login</a> | <a href="register">register</a>
+            <a href="login" class="{{lo_status}}">login</a>
+            <a href="register" class="{{re_status}}">register</a>
           {% endif %}
+            </div>
         </div>
-        </br>
-        </br>
-        </br>
-        <a href="/">Home | </a>
-        <a href="/blog">All Blogz</a>
-        <a href="/newpost">| New Entry</a>
+
+        
         {% block content %}
         {% endblock %}
         {% with messages = get_flashed_messages(with_categories=True) %}

@@ -2,44 +2,96 @@
 
 {% block content %}
 
+<!--main blog page, all blogs-->
+
 {% if not blog_id and not blog_user%}
 <h1>All Blogz!</h1>
 
-{% for entry in bloglist %}
+{% for entry in bloglist.items %}
     <div class = "entry">
-        <h2><a href="/blog?id={{entry.id}}">{{entry.title}}</a></h2>
+        <h2><a href="/blog/1?id={{entry.id}}">{{entry.title}}</a></h2>
         <p>{{entry.body}}</p>
-        <p class = "written_by">written by <a href ="/blog?user={{entry.owner.username}}">{{entry.owner.username}}</a></p>
+        <p class = "written_by">written by <a href ="/blog/1?user={{entry.owner.username}}">{{entry.owner.username}}</a> on {{entry.pub_date}} EST</p>
     </div>
     <hr />
 {% endfor %}
 
+<footer>
+    {% if bloglist.has_prev %}<a style="float: left" href="{{ url_for('blog', page_num=bloglist.prev_num) }}">&lt;&lt; Newer</a>
+    {% else %}<span style="float: left">&lt;&lt; Newer</span>{% endif %} 
+    
+
+    {% for page in bloglist.iter_pages(2,2,3,2) %}
+        {% if page %}
+        {% if page != bloglist.page %}
+            <a href="{{ url_for("blog", page_num=page) }}">{{ page }}</a>
+        {% else %}
+            <strong>{{ page }}</strong>
+        {% endif %}
+        {% else %}
+        <span class=ellipsis>…</span>
+        {% endif %}
+    {% endfor %}
+
+    
+    {% if bloglist.has_next %}<a style="float: right" href="{{ url_for('blog', page_num=bloglist.next_num) }}">Older &gt;&gt;</a>
+    {% else %}<span style="float: right">Older &gt;&gt;</span>{% endif %}
+
+</footer>
 {% endif %}
 
+
+
+<!--single blog item-->
 {% if blog_id %}
 <h1>{{blog.title}}</h1>
 <div class = "entry">
     
     <p>{{blog.body}}</p>
-    <p class = "written_by">written by <a href ="/blog?user={{blog.owner.username}}">{{blog.owner.username}}</a></p>
+    <p class = "written_by">written by <a href ="/blog/1?user={{blog.owner.username}}">{{blog.owner.username}}</a> on {{blog.pub_date}} EST</p>
 </div>
 
 {% endif %}
 
+
+<!--single user's blogs-->
 {% if blog_user%}
 
 <h1>{{blog_user}}'s Blog!</h1>
 
-{% for entry in user_bloglist %}
+{% for entry in user_bloglist.items %}
     <div class = "entry">
-        <h2><a href="/blog?id={{entry.id}}">{{entry.title}}</a></h2>
+        <h2><a href="/blog/1?id={{entry.id}}">{{entry.title}}</a></h2>
         <p>{{entry.body}}</p>
-        <p class = "written_by">written by <a href ="/blog?user={{entry.owner.username}}">{{entry.owner.username}}</a></p>
+        <p class = "written_by">written by <a href ="/blog/1?user={{entry.owner.username}}">{{entry.owner.username}}</a> on {{entry.pub_date}} EST</p>
 
     </div>
     <hr />
 {% endfor %}
 
+<footer>
+        {% if user_bloglist.has_prev %}<a style="float: left" href="/blog/{{user_bloglist.prev_num}}?user={{user_bloglist.items[0].owner.username}}">&lt;&lt; Newer</a>
+        {% else %}<span style="float: left">&lt;&lt; Newer</span>{% endif %}  
+        
+
+    {% for page in user_bloglist.iter_pages(2,2,3,2) %}
+        {% if page %}
+        {% if page != user_bloglist.page %}
+            <a href="/blog/{{page}}?user={{user_bloglist.items[0].owner.username}}">{{ page }}</a>
+        {% else %}
+            <strong>{{ page }}</strong>
+        {% endif %}
+        {% else %}
+        <span class=ellipsis>…</span>
+        {% endif %}
+    {% endfor %}
+
+    
+        {% if user_bloglist.has_next %}<a style="float: right" href="/blog/{{user_bloglist.next_num}}?user={{user_bloglist.items[0].owner.username}}">Older &gt;&gt;</a>
+        {% else %}<span style="float: right">Older &gt;&gt;</span>{% endif %}
+
+    
+</footer>
 {% endif %}
 
 {% endblock %}

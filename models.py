@@ -1,11 +1,13 @@
 from app import db
 from hashutils import make_pw_hash
+from datetime import datetime
 
 class Blog(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200))
     body = db.Column(db.String(10000))
+    pub_date = db.Column(db.DateTime, default=datetime.now)
     owner_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 
     def __init__(self, title, body, owner):

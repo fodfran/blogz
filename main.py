@@ -36,7 +36,7 @@ def login():
             flash("Logged in successfully!")
             return redirect("/newpost") 
             
-    return render_template("login.html", title = "Log In")
+    return render_template("login.html", title = "Log In", lo_status="active")
 
 @app.route("/register", methods=['POST', 'GET'])
 def register():
@@ -63,7 +63,7 @@ def register():
             else:
                 flash("This user already exists", "error")
 
-    return render_template("register.html", title = "Register")
+    return render_template("register.html", title = "Register", re_status="active")
 
 @app.route('/logout', methods=['POST'])
 def logout():
@@ -71,8 +71,8 @@ def logout():
     return redirect('/login')
 
 
-@app.route("/blog")
-def blog():
+@app.route("/blog/<int:page_num>")
+def blog(page_num):
     encoded_username = request.args.get("user")
     user_bloglist = []
 
@@ -82,16 +82,16 @@ def blog():
 
     if encoded_username:
         user = User.query.filter_by(username = encoded_username).first()
-        user_bloglist = Blog.query.filter_by(owner = user).all()
+        user_bloglist = Blog.query.filter_by(owner = user).order_by(Blog.pub_date.desc()).paginate(per_page=5, page=page_num, error_out=False)
         header_title = user.username + "'s Blog"
     
     if encoded_blog_id:
         blog = Blog.query.get(int(encoded_blog_id))
         header_title = blog.title
 
-    return render_template('blog.html', bloglist = Blog.query.all(), title = header_title, 
+    return render_template('blog.html', bloglist = Blog.query.order_by(Blog.pub_date.desc()).paginate(per_page=5, page=page_num, error_out=False), title = header_title, 
         blog = blog, blog_id = encoded_blog_id and cgi.escape(encoded_blog_id, quote=True), 
-        user_bloglist = user_bloglist, blog_user = encoded_username and cgi.escape(encoded_username, quote=True))
+        user_bloglist = user_bloglist, blog_user = encoded_username and cgi.escape(encoded_username, quote=True), bl_status="active")
 
 @app.route("/newpost", methods = ['POST', 'GET'])
 def add_post():
@@ -117,13 +117,13 @@ def add_post():
         db.session.add(new_blog)
         db.session.commit()
 
-        return redirect("/blog?id=" + str(new_blog.id))
+        return redirect("/blog/1?id=" + str(new_blog.id))
 
-    return render_template('newpost.html', title = "New Entry", blog_owner = blog_owner)
+    return render_template('newpost.html', title = "New Entry", blog_owner = blog_owner, ne_status="active")
 
 @app.route("/")
 def index():  
-    return render_template("index.html", userlist = User.query.all(), title="Blogz")
+    return render_template("index.html", userlist = User.query.all(), title="Blogz", ho_status="active")
 
 if __name__ == '__main__':
     app.run()
