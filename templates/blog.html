@@ -13,7 +13,8 @@
         <p>{{entry.body}}</p>
         <p class = "written_by">written by <a href ="/blog/1?user={{entry.owner.username}}">{{entry.owner.username}}</a> on {{entry.pub_date}} EST</p>
     </div>
-    <hr />
+    </br>
+    </br>
 {% endfor %}
 
 <footer>
@@ -60,13 +61,14 @@
 <h1>{{blog_user}}'s Blog!</h1>
 
 {% for entry in user_bloglist.items %}
-    <div class = "entry">
+    <div class = "user_entry">
         <h2><a href="/blog/1?id={{entry.id}}">{{entry.title}}</a></h2>
         <p>{{entry.body}}</p>
         <p class = "written_by">written by <a href ="/blog/1?user={{entry.owner.username}}">{{entry.owner.username}}</a> on {{entry.pub_date}} EST</p>
 
     </div>
-    <hr />
+    </br>
+    </br>
 {% endfor %}
 
 <footer>
